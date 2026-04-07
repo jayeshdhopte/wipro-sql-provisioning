@@ -1,26 +1,27 @@
-resource_group_name = "rama-rg"
+resource_group_name = "ramu-rg"
 location            = "centralindia"
 
-sql_server_name     = "rama-sqlserver-demo"
-sql_db_name         = "rama-sqldb-demo"
+sql_server_name = "ramu-sqlserver-demo"
+sql_db_name     = "ramu-sqldb-demo"
 
-sql_azuread_login   = "ramadevops"
-sid                 = "f76b6b93-7ac2-4a0a-bb0e-414156cd2fb0"
-tenant_id           = "2ea4351f-311e-45ce-8380-4bea38d1040c"
+sql_azuread_login = "ramanuja_translab.io#EXT#@wtest658gmail.onmicrosoft.com"
 
-sku_tier            = "GeneralPurpose"
+# ── Pass via CI/CD secrets, NOT hardcoded ────
+sql_local_admin_username = "azureadmin"
+sql_local_admin_password = "qazwsx@12345678"
 
-compute_tier        = "serverless"
+sku_tier     = "GeneralPurpose"
+compute_tier = "serverless"
 
 pitr_diff_backup_interval_in_hours = 12
 pitr_retention_days                = 7
 
-ltr_weekly_retention  = "P1W"
+ltr_weekly_retention = "P1W"
 ltr_monthly_retention = "P1M"
 ltr_yearly_retention  = "P1Y"
 ltr_week_of_year      = 1
 
 resource_tags = {
-  Environment = "Dev"
+  Environment = "prod"
   Owner       = "CloudTeam"
 }

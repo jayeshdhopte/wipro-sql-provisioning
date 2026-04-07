@@ -18,24 +18,44 @@ variable "sql_db_name" {
   type        = string
 }
 
+# This is the ONLY input needed from ServiceNow.
+# Object ID is NO LONGER a variable — it's auto-fetched.
+# Validation ensures only valid UPN formats are accepted.
+
 variable "sql_azuread_login" {
-  description = "Azure AD Admin Login"
+  description = "Azure AD user (internal or guest user)"
   type        = string
+
+  validation {
+    condition = (
+      can(regex("^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$", var.sql_azuread_login))
+      ||
+      can(regex("^[a-zA-Z0-9._%+\\-]+#EXT#@[a-zA-Z0-9.\\-]+\\.onmicrosoft\\.com$", var.sql_azuread_login))
+    )
+
+    error_message = "ERROR: '${var.sql_azuread_login}' must be either a valid internal user (user@domain.com) or a valid guest user (#EXT# format)."
+  }
 }
 
-variable "sid" {
-  description = "Azure AD Admin Object ID"
+variable "sql_local_admin_username" {
+  description = "Local SQL admin username (avoid hardcoding — pass via pipeline secret)"
   type        = string
+  sensitive   = true
 }
 
-variable "tenant_id" {
-  description = "Tenant ID"
+variable "sql_local_admin_password" {
+  description = "Local SQL admin password (avoid hardcoding — pass via pipeline secret)"
   type        = string
+  sensitive   = true
 }
 
 variable "resource_tags" {
   description = "Resource Tags"
   type        = map(string)
+  default = {
+    environment = "dev"
+    project     = "default"
+  }
 }
 
 variable "sku_tier" {
@@ -46,7 +66,6 @@ variable "sku_tier" {
 variable "compute_tier" {
   description = "Compute Tier"
   type        = string
-  default     = "serverless"
 }
 
 variable "pitr_diff_backup_interval_in_hours" {
