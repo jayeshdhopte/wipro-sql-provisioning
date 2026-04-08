@@ -57,7 +57,7 @@ resource "azurerm_mssql_database" "sqldb" {
   name        = var.sql_db_name
   server_id   = azurerm_mssql_server.sqlserver.id
   collation   = "SQL_Latin1_General_CP1_CI_AS"
-  sku_name    = var.compute_tier == "serverless" ? "GP_S_Gen5_1" : "GP_Gen5_1"
+  sku_name    = var.compute_tier == "serverless" ? "GP_S_Gen5_1" : "GP_Gen5_2"
   max_size_gb = 1
 
   zone_redundant              = false
